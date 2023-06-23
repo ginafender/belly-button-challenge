@@ -9,3 +9,22 @@ d3.json(url).then(function(data) {
     console.log(data);
 });
 
+let sample_values = Object.values(samples.sample_values);
+let otu_ids = Object.values(samples.otu_ids);
+let otu_labels = Object.values(samples.otu_labels);
+
+// display default plot
+function init() {
+    let data = [{
+        values: sample_values,
+        labels: otu_ids,
+        type: "bar"
+    }];
+
+    let layout = {
+        height: 600,
+        width: 800
+    };
+
+    Plotly.newPlot("bar", data, layout);
+}
