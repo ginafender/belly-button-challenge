@@ -1,8 +1,7 @@
 const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
-// Fetch the JSON data and process it    
+// Bar Graph   
 function bargraphFunction(bargraph) {
-
   d3.json(url).then(function(data) {
       console.log(data);
 
@@ -30,6 +29,7 @@ function bargraphFunction(bargraph) {
 
   };
 
+// Bubble Chart
 function bubbleChart(bubble) {
   d3.json(url).then(function(data) {
 
@@ -61,7 +61,38 @@ function bubbleChart(bubble) {
   });
 };
 
+// MetaData display
+function metadataFunction(metadataBox) {
+    d3.json(url).then(function(data) {
 
+    let metadata = data.metadata;
+    let filteredmetaData = metadata.filter(met => met.id == metadataBox);
+    // console.log(filteredmetaData[0]);
+
+    let result = filteredmetaData[0];
+
+    let textBox = d3.select("#sample-metadata"); 
+    textBox.html("");
+
+    var info = [
+      {key: "ID", value: result.id},
+      {key: "Ethinicity", value: result.ethnicity},
+      {key: "Gender", value: result.gender},
+      {key: "Age", value: result.age},
+      {key: "Location", value: result.location},
+      {key: "BB Type", value: result.bbtype},
+      {key: "W Frequency", value: result.wfreq}
+    ];
+
+    info.forEach(function(item) {
+      textBox.append("h6")
+        .text(item.key + ": " + item.value)
+        .style("font-size", "12px");
+    });
+  })
+};
+
+// Dropdown Menu
 function init() {
   let dropdownMenu = d3.select("#selDataset");
 
@@ -73,13 +104,15 @@ function init() {
 
         bargraphFunction(names[0])
         bubbleChart(names[0])
+        metadataFunction(names[0])
 
       });
     };
-
 init();
 
+// Call all functions
 function optionChanged(newValue) {
   bargraphFunction(newValue)
   bubbleChart(newValue)
+  metadataFunction(newValue)
 };
