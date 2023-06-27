@@ -7,7 +7,7 @@ function bargraphFunction(bargraph) {
       console.log(data);
 
         let samples = data.samples;
-        // let firstsample = samples[0]
+        // let firstsample = samples[0];
         let filteredData = samples.filter(sam => sam.id === bargraph)[0];
 
         let trace1 = {
@@ -30,6 +30,38 @@ function bargraphFunction(bargraph) {
 
   };
 
+function bubbleChart(bubble) {
+  d3.json(url).then(function(data) {
+
+    let samples = data.samples;
+    // let firstsample = samples[0];
+    let filteredData = samples.filter(sam => sam.id === bubble)[0];
+
+    var trace2 = {
+      x: filteredData.otu_ids,
+      y: filteredData.sample_values,
+      text: filteredData.otu_labels,
+      mode: 'markers',
+      marker: {
+        size: filteredData.sample_values,
+        color: filteredData.otu_ids
+      }
+    };
+    
+    var data = [trace2];
+    
+    var layout = {
+      showlegend: false,
+      height: 600,
+      width: 1100
+    };
+    
+    Plotly.newPlot('bubble', data, layout);
+
+  });
+};
+
+
 function init() {
   let dropdownMenu = d3.select("#selDataset");
 
@@ -40,6 +72,7 @@ function init() {
       .property("value", eachName)}) 
 
         bargraphFunction(names[0])
+        bubbleChart(names[0])
 
       });
     };
@@ -48,4 +81,5 @@ init();
 
 function optionChanged(newValue) {
   bargraphFunction(newValue)
+  bubbleChart(newValue)
 };
